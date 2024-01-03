@@ -2,6 +2,7 @@ package com.tirkisovkadyr.whilelearndatastructures;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -37,6 +38,11 @@ public class CreateNewStationActivity extends AppCompatActivity {
         String name = String.valueOf(edt.getText());
 
         addBusStation(name);
+
+        Intent data = new Intent();
+        data.putExtra(ConfirmBusActivity.ACCESS_MESSAGE, name);
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     public List<String> getStations() {

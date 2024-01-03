@@ -13,7 +13,9 @@ import java.io.IOException;
 
 public class ReadFromFileActivity extends AppCompatActivity {
 
-    private DBFilesIO dbFilesIO = new DBFilesIO(this);
+
+    private static final String BUS_STAMPS   = "bus_stamps.json";
+    private static final String BUS_STATIONS = "bus_stations.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,34 @@ public class ReadFromFileActivity extends AppCompatActivity {
 
         TextView fileTextView = findViewById(R.id.fileTextView);
 
-        fileTextView.setText(dbFilesIO.readFromFile());
+        fileTextView.setText(readFromFile());
+
+    }
+
+    public String readFromFile() {
+
+        FileInputStream fin = null;
+
+        try {
+
+            fin = openFileInput(BUS_STAMPS);
+            byte[] bytes = new byte[fin.available()];
+            fin.read(bytes);
+            String text = new String(bytes);
+            return text;
+
+        } catch (IOException ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+
+            try {
+                if (fin != null)
+                    fin.close();
+            } catch (IOException ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        return null;
 
     }
 

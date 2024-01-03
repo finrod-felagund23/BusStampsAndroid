@@ -21,7 +21,8 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     public static final String FILE_NAME = "dump.txt";
-    private DBFilesIO dbFilesIO = new DBFilesIO(this);
+    private static final String BUS_STAMPS   = "bus_stamps.json";
+    private static final String BUS_STATIONS = "bus_stations.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickDeleteFileBtn(View view) {
-        dbFilesIO.clearFile();
+        clearFile();
+    }
+
+    public void clearFile() {
+
+        System.out.println("DBFilesIO::clearFile::1");
+        FileOutputStream fos = null;
+        FileOutputStream fos_ = null;
+
+        try {
+            fos = openFileOutput(BUS_STAMPS, MODE_PRIVATE);
+            fos_ = openFileOutput(BUS_STATIONS, MODE_PRIVATE);
+            System.out.println("DBFilesIO::clearFile::2");
+            fos.write("".getBytes(StandardCharsets.UTF_8));
+            fos_.write("".getBytes(StandardCharsets.UTF_8));
+            System.out.println("DBFilesIO::clearFile::3");
+            Toast.makeText(this, "File has been cleared!", Toast.LENGTH_SHORT).show();
+        } catch (IOException ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+                if (fos_ != null) {
+                    fos_.close();
+                }
+
+            } catch (IOException ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
